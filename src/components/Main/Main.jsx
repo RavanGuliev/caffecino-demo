@@ -1,31 +1,38 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiArrowRight, FiArrowUpRight, FiClock, FiMapPin, FiWifi } from "react-icons/fi";
+import { PiGameControllerFill, PiPlayFill } from "react-icons/pi";
 import { getFullCategory, getPopularProducts } from "../../api/api";
-import { HERO_IMAGE, cafeInfo } from "../../data/mockData";
+import { useSettings } from "../../hooks/useSettings";
 import useLocalized from "../../hooks/useLocalized";
 import SmartImage from "../UI/SmartImage";
 import Cards from "./Cards";
+import { ErrorState } from "../UI/StatusMessage";
+import useOpenStatus from "../../hooks/useOpenStatus";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 
 function Hero() {
-  const { t, L } = useLocalized();
+  const { t, L, lang } = useLocalized();
+  const cafeInfo = useSettings();
+  const status = useOpenStatus(cafeInfo.hours);
+  const isOpen = status?.isOpen ?? true;
   return (
     <section className="px-3 md:px-6 pt-3">
       <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[32px] bg-brand-900 min-h-[440px] md:min-h-[480px] flex">
-        <img src={HERO_IMAGE} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img src={cafeInfo.hero_image} alt="" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/70 to-brand-900/20 md:bg-gradient-to-r md:from-brand-950 md:via-brand-950/80 md:to-transparent" />
         <div className="relative mt-auto md:my-auto w-full p-6 md:p-12 md:max-w-xl animate-rise">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 backdrop-blur px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-brand-200 ring-1 ring-white/15">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75 animate-ping" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-brand-400" />
+              {isOpen && <span className="absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75 animate-ping" />}
+              <span className={`relative inline-flex h-2 w-2 rounded-full ${isOpen ? "bg-brand-400" : "bg-white/40"}`} />
             </span>
-            {t("open_now")} · {cafeInfo.hours}
+            {!status ? cafeInfo.hours : isOpen ? `${t("open_now")} · ${cafeInfo.hours}` : `${t("closed_now")} · ${t("opens_at", { time: status.opensAt })}`}
           </span>
           <h1 className="mt-4 font-display text-[40px] md:text-6xl leading-[1.05] font-semibold text-white">
-            {t("hero_title")}
+            {cafeInfo[`hero_title_${lang}`] || t("hero_title")}
           </h1>
-          <p className="mt-4 text-[15px] md:text-base leading-relaxed text-brand-100/80 max-w-md">{t("hero_text")}</p>
+          <p className="mt-4 text-[15px] md:text-base leading-relaxed text-brand-100/80 max-w-md">{cafeInfo[`hero_text_${lang}`] || t("hero_text")}</p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <a
               href="#categories"
@@ -88,6 +95,7 @@ function CategoryCard({ item, index }) {
 
 function InfoStrip() {
   const { t, L } = useLocalized();
+  const cafeInfo = useSettings();
   const items = [
     { icon: <FiClock size={20} />, label: t("hours"), value: `${t("every_day")} · ${cafeInfo.hours}` },
     { icon: <FiMapPin size={20} />, label: t("address"), value: L(cafeInfo, "address") },
@@ -112,25 +120,60 @@ function InfoStrip() {
   );
 }
 
+function GamePromo() {
+  const { t } = useLocalized();
+  return (
+    <section className="px-4 md:px-6 pt-14">
+      <Link
+        to="/game"
+        className="group relative mx-auto max-w-6xl flex items-center gap-4 overflow-hidden rounded-[28px] bg-brand-900 p-5 md:p-7 text-white shadow-soft"
+      >
+        <div className="grain absolute inset-0 pointer-events-none" />
+        <div className="absolute -right-10 -top-16 h-48 w-48 rounded-full bg-brand-500/30 blur-3xl" />
+        <span className="relative grid place-items-center h-14 w-14 md:h-16 md:w-16 shrink-0 rounded-2xl bg-gold text-brand-950 lucky-float">
+          <PiGameControllerFill size={30} />
+        </span>
+        <div className="relative flex-1 min-w-0">
+          <h3 className="font-display text-lg md:text-2xl font-bold leading-tight">{t("game_promo_title")}</h3>
+          <p className="mt-1 text-sm text-white/65 line-clamp-2">{t("game_promo_text")}</p>
+        </div>
+        <span className="relative hidden sm:inline-flex items-center gap-2 h-11 px-5 rounded-full bg-cream text-brand-900 text-sm font-bold group-hover:bg-white transition">
+          <PiPlayFill /> {t("game_play")}
+        </span>
+        <span className="relative sm:hidden grid place-items-center h-10 w-10 rounded-full bg-cream text-brand-900">
+          <PiPlayFill />
+        </span>
+      </Link>
+    </section>
+  );
+}
+
 export default function Main() {
   const [categories, setCategories] = useState([]);
   const [popular, setPopular] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const { t } = useLocalized();
+  useDocumentTitle(null, t("meta_home"));
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    setError(false);
+    try {
+      const [cats, pop] = await Promise.all([getFullCategory(), getPopularProducts().catch(() => [])]);
+      setCategories(cats.filter((c) => c.status));
+      setPopular(pop);
+    } catch (err) {
+      console.error("Error loading categories:", err);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const [cats, pop] = await Promise.all([getFullCategory(), getPopularProducts()]);
-        setCategories(cats.filter((c) => c.status));
-        setPopular(pop);
-      } catch (err) {
-        console.error("Error loading categories:", err);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+    load();
+  }, [load]);
 
   return (
     <main className="min-h-[90vh] pb-16">
@@ -139,6 +182,9 @@ export default function Main() {
       <section id="categories" className="scroll-mt-20 px-4 md:px-6 pt-12">
         <div className="mx-auto max-w-6xl">
           <SectionTitle title={t("category")} subtitle={t("categories_sub")} />
+          {error ? (
+            <div className="rounded-[26px] bg-white ring-1 ring-sand"><ErrorState onRetry={load} /></div>
+          ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
             {loading
               ? Array.from({ length: 8 }).map((_, i) => (
@@ -146,6 +192,7 @@ export default function Main() {
                 ))
               : categories.map((item, i) => <CategoryCard key={item.id} item={item} index={i} />)}
           </div>
+          )}
         </div>
       </section>
 
@@ -164,7 +211,9 @@ export default function Main() {
         </section>
       )}
 
-      <div className="pt-14">
+      <GamePromo />
+
+      <div className="pt-6">
         <InfoStrip />
       </div>
     </main>

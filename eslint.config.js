@@ -23,7 +23,9 @@ export default defineConfig([
       },
     },
     rules: {
-      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]', argsIgnorePattern: '^[A-Z_]' }],
+      // Provider + hook eyni faylda saxlanılır (useAuth, useFeedback, useSettings)
+      'react-refresh/only-export-components': ['error', { allowConstantExport: true, allowExportNames: ['useAuth', 'useFeedback', 'useSettings', 'useFavorites', 'emptyImage', 'imagePayload'] }],
     },
   },
 ])

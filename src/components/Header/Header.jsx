@@ -1,14 +1,18 @@
 import Logo from "../UI/Logo";
 import LanguageSwitcher from "../UI/LanguageSwitcher";
 import SocialLinks from "../UI/SocialLinks";
+import FavoritesLink from "../Favorites/FavoritesLink";
+import GameLink from "../Game/GameLink";
 
 function Header() {
   return (
     <header className="sticky top-0 z-40 bg-brand-900/90 backdrop-blur-md border-b border-white/5">
       <div className="mx-auto max-w-6xl h-16 flex items-center justify-between px-4 md:px-6">
         <Logo />
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <SocialLinks className="hidden sm:flex" />
+          <GameLink />
+          <FavoritesLink />
           <LanguageSwitcher />
         </div>
       </div>

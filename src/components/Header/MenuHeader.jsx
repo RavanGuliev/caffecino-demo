@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 import { GoSearch } from "react-icons/go";
 import LanguageSwitcher from "../UI/LanguageSwitcher";
+import FavoritesLink from "../Favorites/FavoritesLink";
+import GameLink from "../Game/GameLink";
 import useLocalized from "../../hooks/useLocalized";
 
 function MenuHeader({ title, onSearchToggle }) {
@@ -16,15 +18,17 @@ function MenuHeader({ title, onSearchToggle }) {
           <Link to="/" className={btn} aria-label={t("all_categories")}>
             <IoIosArrowBack size={20} />
           </Link>
-          <Link to="/" className="shrink-0">
+          <Link to="/" className="shrink-0 hidden sm:block">
             <img src="/images/caffecino.png" alt="Caffècino" className="h-9 w-9 rounded-xl object-cover ring-1 ring-white/15" />
           </Link>
           <h1 className="font-display text-lg font-semibold text-white truncate">{title}</h1>
         </div>
-        <div className="flex items-center gap-2">
-          <button onClick={onSearchToggle} className={btn} aria-label="Search">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <button onClick={onSearchToggle} className={btn} aria-label={t("search")}>
             <GoSearch size={17} />
           </button>
+          <GameLink />
+          <FavoritesLink />
           <LanguageSwitcher />
         </div>
       </div>

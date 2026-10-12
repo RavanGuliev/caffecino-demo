@@ -6,6 +6,8 @@ import MenuHeader from "../Header/MenuHeader";
 import SmartImage from "../UI/SmartImage";
 import Cards from "./Cards";
 import SearchOverlay from "./SearchOverlay";
+import { ErrorState, NotFound } from "../UI/StatusMessage";
+import useDocumentTitle from "../../hooks/useDocumentTitle";
 
 const HEADER_H = 64; // MenuHeader hündürlüyü
 const TABS_H = 60; // bölmə tablarının hündürlüyü
@@ -47,12 +49,15 @@ export default function Menu() {
   const [categories, setCategories] = useState([]);
   const [sections, setSections] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null); // null | "notfound" | "network"
+  const [reloadKey, setReloadKey] = useState(0);
   const [searchOpen, setSearchOpen] = useState(false);
   const [active, setActive] = useState("");
   const tabsRef = useRef(null);
   const lockRef = useRef(false);
 
   const category = categories.find((c) => String(c.id) === String(categoryId));
+  useDocumentTitle(category ? L(category, "name") : null, category ? L(category, "subtitle") : undefined);
 
   useEffect(() => {
     getFullCategory()
@@ -62,6 +67,7 @@ export default function Menu() {
 
   useEffect(() => {
     setIsLoading(true);
+    setError(null);
     (async () => {
       try {
         const data = await getProductsByCategory(categoryId);
@@ -74,11 +80,12 @@ export default function Menu() {
       } catch (err) {
         console.error("Error loading menu:", err);
         setSections([]);
+        setError(err.status === 404 ? "notfound" : "network");
       } finally {
         setIsLoading(false);
       }
     })();
-  }, [categoryId]);
+  }, [categoryId, reloadKey]);
 
   // Scroll zamanı aktiv bölməni təyin et
   useEffect(() => {
@@ -115,6 +122,15 @@ export default function Menu() {
   };
 
   const closeSearch = useCallback(() => setSearchOpen(false), []);
+  if (error === "notfound") {
+    return (
+      <>
+        <MenuHeader title="" onSearchToggle={() => setSearchOpen(true)} />
+        <NotFound />
+        {searchOpen && <SearchOverlay onClose={closeSearch} />}
+      </>
+    );
+  }
   const totalItems = sections.reduce((n, s) => n + s.products.length, 0);
 
   return (
@@ -158,6 +174,8 @@ export default function Menu() {
               ))}
             </div>
           </div>
+        ) : error === "network" ? (
+          <ErrorState onRetry={() => setReloadKey((k) => k + 1)} />
         ) : sections.length === 0 ? (
           <div className="grid place-items-center min-h-[50vh] px-6 text-center">
             <div>

@@ -8,7 +8,7 @@ const LANGUAGES = {
   ru: { label: "RU", name: "Русский", flagUrl: "https://flagcdn.com/w40/ru.png" },
 };
 
-export default function LanguageSwitcher() {
+export default function LanguageSwitcher({ up = false, align = "right" }) {
   const { i18n, lang } = useLocalized();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -45,14 +45,14 @@ export default function LanguageSwitcher() {
         aria-expanded={open}
       >
         <img src={LANGUAGES[lang].flagUrl} alt="" className="h-6 w-6 rounded-full object-cover" />
-        <span className="text-white text-xs font-bold">{LANGUAGES[lang].label}</span>
+        <span className="text-white text-xs font-bold max-[399px]:hidden">{LANGUAGES[lang].label}</span>
         <FaAngleDown className={`text-white/80 transition-transform ${open ? "rotate-180" : ""}`} size={12} />
       </button>
 
       {open && (
         <ul
           role="listbox"
-          className="absolute right-0 mt-2 w-44 rounded-2xl bg-white p-1.5 shadow-soft ring-1 ring-black/5 z-50 animate-pop-in"
+          className={`absolute ${align === "left" ? "left-0" : "right-0"} ${up ? "bottom-full mb-2" : "mt-2"} w-44 rounded-2xl bg-white p-1.5 shadow-soft ring-1 ring-black/5 z-50 animate-pop-in`}
         >
           {Object.entries(LANGUAGES).map(([code, l]) => (
             <li key={code}>

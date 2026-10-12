@@ -9,7 +9,7 @@ export default function Logo({ compact = false }) {
         className="h-10 w-10 rounded-xl object-cover ring-1 ring-white/15 shadow-sm"
       />
       {!compact && (
-        <span className="leading-none">
+        <span className="leading-none max-[379px]:hidden">
           <span className="block font-display text-[19px] font-semibold tracking-[0.18em] text-white">
             CAFFÈCINO
           </span>

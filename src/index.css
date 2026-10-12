@@ -17,9 +17,11 @@
   --color-cream: #f7f5ee;
   --color-sand: #ece6d8;
   --color-gold: #c8a464;
+  --color-love: #e5484d;
+  --color-love-soft: #fdeeee;
 
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Playfair Display", ui-serif, Georgia, serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
 
   --shadow-soft: 0 10px 30px -12px rgb(22 56 43 / 0.25);
   --shadow-card: 0 2px 10px -2px rgb(22 56 43 / 0.08), 0 1px 2px rgb(22 56 43 / 0.06);
@@ -82,3 +84,44 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+@layer base {
+  /* Montserrat başlıqlarda bir az sıx görünsün; tracking-* utility-ləri bunu üstələyir */
+  .font-display {
+    letter-spacing: -0.02em;
+  }
+}
+
+/* ---------- Şans kofesi ---------- */
+@keyframes lucky-spin {
+  to { transform: rotate(360deg); }
+}
+.lucky-spin-slow { animation: lucky-spin 14s linear infinite; }
+.lucky-spin-fast { animation: lucky-spin 1.2s linear infinite; }
+
+@keyframes lucky-float {
+  0%, 100% { transform: translateY(0) rotate(-4deg); }
+  50% { transform: translateY(-8px) rotate(4deg); }
+}
+.lucky-float { animation: lucky-float 2.4s ease-in-out infinite; }
+
+@keyframes lucky-confetti {
+  0% { opacity: 1; transform: translate(-50%, -50%) rotate(0) scale(0.4); }
+  70% { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y) + 60px)) rotate(var(--r)) scale(1); }
+}
+.lucky-confetti { animation: lucky-confetti 1.3s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* ---------- Bəyənmə ---------- */
+@keyframes like-pop {
+  0% { transform: scale(0.4); }
+  55% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+.like-pop { animation: like-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1); }
+
+@keyframes like-ring {
+  from { box-shadow: 0 0 0 0 rgb(229 72 77 / 0.45); }
+  to { box-shadow: 0 0 0 12px rgb(229 72 77 / 0); }
+}
+.like-ring { animation: like-ring 0.6s ease-out forwards; }

@@ -1,7 +1,8 @@
 import { FaInstagram, FaTiktok } from "react-icons/fa";
-import { cafeInfo } from "../../data/mockData";
+import { useSettings } from "../../hooks/useSettings";
 
 export default function SocialLinks({ className = "" }) {
+  const cafeInfo = useSettings();
   const cls =
     "grid place-items-center h-9 w-9 rounded-full bg-white/10 hover:bg-white/20 ring-1 ring-white/15 text-white transition-colors";
   return (

@@ -4,6 +4,7 @@ import useLocalized, { formatPrice } from "../../hooks/useLocalized";
 import SmartImage from "../UI/SmartImage";
 import Badge from "../UI/Badge";
 import ProductSheet from "./ProductSheet";
+import LikeButton from "../Favorites/LikeButton";
 
 // variant: "grid" (default) | "row" (axtarış nəticələri üçün)
 function Cards({ product, variant = "grid", style }) {
@@ -27,6 +28,7 @@ function Cards({ product, variant = "grid", style }) {
             <p className="text-xs text-brand-950/55 line-clamp-1">{description}</p>
           </div>
           <span className="shrink-0 pr-1 font-extrabold text-brand-800 text-sm">{formatPrice(fromPrice)}</span>
+          <LikeButton productId={product.id} className="shrink-0 ring-1 ring-sand shadow-none" />
         </button>
       ) : (
         <article
@@ -46,6 +48,7 @@ function Cards({ product, variant = "grid", style }) {
                 <Badge type={firstBadge} solid />
               </div>
             )}
+            <LikeButton productId={product.id} className="absolute top-2 right-2" />
           </div>
           <div className="flex flex-col flex-1 px-1.5 pt-3 pb-1">
             <h4 className="text-[15px] font-bold leading-snug text-brand-950">{name}</h4>

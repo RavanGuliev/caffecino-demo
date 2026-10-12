@@ -4,6 +4,7 @@ import { FiClock, FiZap } from "react-icons/fi";
 import useLocalized, { formatPrice } from "../../hooks/useLocalized";
 import SmartImage from "../UI/SmartImage";
 import Badge from "../UI/Badge";
+import LikeButton from "../Favorites/LikeButton";
 
 export default function ProductSheet({ product, onClose }) {
   const { t, L } = useLocalized();
@@ -17,11 +18,15 @@ export default function ProductSheet({ product, onClose }) {
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const onKey = (e) => e.key === "Escape" && closeRef.current();
-    document.addEventListener("keydown", onKey);
+    const onKey = (e) => {
+      if (e.key !== "Escape") return;
+      e.stopPropagation(); // capture fazasında tutulur ki, arxadakı axtarış pəncərəsi bağlanmasın
+      closeRef.current();
+    };
+    document.addEventListener("keydown", onKey, true);
     return () => {
       document.body.style.overflow = prev;
-      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("keydown", onKey, true);
     };
   }, []);
 
@@ -35,7 +40,9 @@ export default function ProductSheet({ product, onClose }) {
     >
       <div className="relative w-full sm:max-w-md max-h-[92vh] overflow-y-auto scroll-none bg-cream rounded-t-[28px] sm:rounded-[28px] shadow-2xl animate-slide-up sm:animate-pop-in">
         <div className="sm:hidden absolute top-2 left-1/2 -translate-x-1/2 z-10 h-1.5 w-10 rounded-full bg-white/70" />
+        <LikeButton productId={product.id} size="lg" className="absolute top-4 right-16 z-10" />
         <button
+          autoFocus
           onClick={onClose}
           className="absolute top-4 right-4 z-10 grid place-items-center h-10 w-10 rounded-full bg-white/90 backdrop-blur text-brand-900 shadow-md hover:bg-white transition"
           aria-label={t("close")}
