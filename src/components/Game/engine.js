@@ -1,6 +1,8 @@
 // "Dənləri tut!" — canvas oyun mühərriki (React-dan asılı deyil)
 // Fincan barmaqla/siçanla/oxlarla idarə olunur, yuxarıdan dənlər düşür.
 
+import { disposeHaptics, haptic } from "./haptics";
+
 export const GAME_TIME = 60; // saniyə
 const LIVES = 3;
 
@@ -73,6 +75,7 @@ export function createGame(canvas, { onUpdate, onEnd }) {
       elapsed: 0,
       spawnIn: 0.5,
       shake: 0,
+      flash: 0, // buza dəyəndə qırmızı yanıb-sönmə
       items: [],
       particles: [],
       texts: [],
@@ -134,10 +137,11 @@ export function createGame(canvas, { onUpdate, onEnd }) {
       s.lives -= 1;
       s.combo = 0;
       s.shake = 0.35;
+      s.flash = 1;
       cup.hurt = 1;
       burst(it.x, cup.y - cup.h / 2, "#cdeaff", 14);
       floatText(it.x, cup.y - cup.h, "−1 ♥", COLORS.love);
-      navigator.vibrate?.(90);
+      haptic("heavy");
       if (s.lives <= 0) return end("lives");
       return;
     }
@@ -147,11 +151,12 @@ export function createGame(canvas, { onUpdate, onEnd }) {
     const pts = (it.type === "gold" ? 5 : 1) * before;
     s.score += pts;
     cup.squash = 1;
+    if (it.type === "gold") haptic("light");
     burst(it.x, cup.y - cup.h / 2, it.type === "gold" ? COLORS.gold : COLORS.crema, it.type === "gold" ? 16 : 9);
     floatText(it.x, cup.y - cup.h, `+${pts}`, it.type === "gold" ? COLORS.gold : COLORS.cream);
     if (s.combo === 10 || s.combo === 20) {
       floatText(W / 2, H * 0.35, `x${multiplier()} COMBO!`, COLORS.gold);
-      navigator.vibrate?.(30);
+      haptic("light");
     }
   }
 
@@ -176,6 +181,7 @@ export function createGame(canvas, { onUpdate, onEnd }) {
     cup.squash = Math.max(0, cup.squash - dt * 5);
     cup.hurt = Math.max(0, cup.hurt - dt * 2.5);
     s.shake = Math.max(0, s.shake - dt);
+    s.flash = Math.max(0, s.flash - dt * 3);
 
     const mouthTop = cup.y - cup.h / 2;
     for (let i = s.items.length - 1; i >= 0; i--) {
@@ -384,6 +390,14 @@ export function createGame(canvas, { onUpdate, onEnd }) {
       ctx.globalAlpha = 1;
     }
     ctx.restore();
+    if (s?.flash > 0) {
+      // ekranın kənarlarında qırmızı parıltı
+      const g = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.25, W / 2, H / 2, Math.max(W, H) * 0.75);
+      g.addColorStop(0, "rgba(229, 72, 77, 0)");
+      g.addColorStop(1, `rgba(229, 72, 77, ${0.55 * s.flash})`);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+    }
   }
 
   function frame(now) {
@@ -458,6 +472,7 @@ export function createGame(canvas, { onUpdate, onEnd }) {
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("keyup", onKey);
       document.removeEventListener("visibilitychange", onVisibility);
+      disposeHaptics();
     },
   };
   return api;

@@ -136,7 +136,8 @@
     "hero_title": "Banner başlığı",
     "hero_text": "Banner mətni",
     "footer_text": "Footer mətni",
-    "hero_image": "Banner şəkli"
+    "hero_image": "Banner şəkli",
+    "email": "Korporativ e-poçt"
   },
   "users": {
     "title": "İstifadəçilər",

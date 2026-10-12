@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FiClock, FiInstagram, FiPhone, FiWifi } from "react-icons/fi";
+import { FiClock, FiInstagram, FiMail, FiPhone, FiWifi } from "react-icons/fi";
 import { FaTiktok } from "react-icons/fa";
 import { adminApi } from "../adminApi";
 import { useFeedback } from "../components/Feedback";
@@ -66,9 +66,14 @@ export default function Settings() {
       <div className="grid lg:grid-cols-2 gap-5">
         <Card className="p-5 space-y-4">
           <h2 className="font-display font-bold text-brand-950">{t("settings.contact")}</h2>
-          <Field label={t("settings.phone")} error={err("phone")}>
-            <IconInput Icon={FiPhone} value={values.phone || ""} onChange={(e) => set("phone", e.target.value)} placeholder="+994 50 000 00 00" />
-          </Field>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <Field label={t("settings.phone")} error={err("phone")}>
+              <IconInput Icon={FiPhone} value={values.phone || ""} onChange={(e) => set("phone", e.target.value)} placeholder="+994 50 000 00 00" />
+            </Field>
+            <Field label={t("settings.email")} error={err("email")}>
+              <IconInput Icon={FiMail} type="email" value={values.email || ""} onChange={(e) => set("email", e.target.value)} placeholder="info@caffecino.az" error={errors.email} />
+            </Field>
+          </div>
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label={t("settings.hours")} error={err("hours")}>
               <IconInput Icon={FiClock} value={values.hours || ""} onChange={(e) => set("hours", e.target.value)} placeholder="08:00 – 23:00" />

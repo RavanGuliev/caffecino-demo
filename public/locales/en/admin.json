@@ -136,7 +136,8 @@
     "hero_title": "Banner title",
     "hero_text": "Banner text",
     "footer_text": "Footer text",
-    "hero_image": "Banner image"
+    "hero_image": "Banner image",
+    "email": "Corporate email"
   },
   "users": {
     "title": "Users",

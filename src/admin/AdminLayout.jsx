@@ -23,9 +23,9 @@ function Sidebar({ onNavigate }) {
   return (
     <div className="flex h-full flex-col bg-brand-900 text-white">
       <div className="flex items-center gap-3 px-5 h-16 border-b border-white/5">
-        <img src="/images/caffecino.png" alt="" className="h-9 w-9 rounded-xl ring-1 ring-white/15" />
+        <img src="/icon-192.png" alt="" className="h-9 w-9 rounded-xl ring-1 ring-white/15" />
         <div className="leading-tight">
-          <p className="font-display text-sm font-bold tracking-[0.14em]">CAFFÈCINO</p>
+          <p className="font-display text-sm font-bold tracking-[0.14em]">CAFFECINO</p>
           <p className="text-[11px] text-brand-300">{t("brand")}</p>
         </div>
       </div>
@@ -99,7 +99,7 @@ export default function AdminLayout() {
         <button onClick={() => setOpen(true)} className="grid place-items-center h-9 w-9 rounded-full bg-white/10 text-white">
           <FiMenu size={18} />
         </button>
-        <span className="font-display text-sm font-bold tracking-[0.14em] text-white">CAFFÈCINO</span>
+        <span className="font-display text-sm font-bold tracking-[0.14em] text-white">CAFFECINO</span>
         <LanguageSwitcher />
       </header>
 

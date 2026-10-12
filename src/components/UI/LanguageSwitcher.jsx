@@ -3,9 +3,9 @@ import { FaAngleDown } from "react-icons/fa";
 import useLocalized from "../../hooks/useLocalized";
 
 const LANGUAGES = {
-  az: { label: "AZ", name: "Azərbaycan", flagUrl: "https://flagcdn.com/w40/az.png" },
-  en: { label: "EN", name: "English", flagUrl: "https://flagcdn.com/w40/gb.png" },
-  ru: { label: "RU", name: "Русский", flagUrl: "https://flagcdn.com/w40/ru.png" },
+  az: { label: "AZ", name: "Azərbaycan", flagUrl: "/flags/az.svg" },
+  en: { label: "EN", name: "English", flagUrl: "/flags/gb.svg" },
+  ru: { label: "RU", name: "Русский", flagUrl: "/flags/ru.svg" },
 };
 
 export default function LanguageSwitcher({ up = false, align = "right" }) {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const FALLBACK = "/images/caffecino.png";
+const FALLBACK = "/icon-192.png";
 
 // Şəkil yüklənənə qədər skeleton göstərir, xəta olarsa loqoya keçir
 export default function SmartImage({ src, alt = "", className = "", imgClassName = "", ...rest }) {

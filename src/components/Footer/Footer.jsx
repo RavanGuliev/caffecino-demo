@@ -1,4 +1,4 @@
-import { FiClock, FiMapPin, FiPhone } from "react-icons/fi";
+import { FiClock, FiMail, FiMapPin, FiPhone } from "react-icons/fi";
 import { useSettings } from "../../hooks/useSettings";
 import { useFavorites } from "../../hooks/useFavorites";
 import useLocalized from "../../hooks/useLocalized";
@@ -15,7 +15,7 @@ function Footer() {
   return (
     <footer className="relative bg-brand-950 text-white overflow-hidden">
       <div className="grain absolute inset-0 pointer-events-none" />
-      <div className="relative mx-auto max-w-6xl px-4 md:px-6 pt-12 pb-8">
+      <div className="relative mx-auto max-w-6xl px-4 md:px-6 pt-12 pb-24 sm:pb-8">
         <div className="grid gap-10 md:grid-cols-[1.3fr_1fr_1fr]">
           <div>
             <Logo />
@@ -28,6 +28,11 @@ function Footer() {
             <a href={`tel:${(cafeInfo.phone || "").replace(/\s/g, "")}`} className={`${row} hover:text-white`}>
               <span className={icon}><FiPhone /></span>{cafeInfo.phone}
             </a>
+            {cafeInfo.email && (
+              <a href={`mailto:${cafeInfo.email}`} className={`${row} hover:text-white break-all`}>
+                <span className={icon}><FiMail /></span>{cafeInfo.email}
+              </a>
+            )}
           </div>
           <div className="space-y-3">
             <p className="text-xs font-bold uppercase tracking-widest text-brand-300/80 mb-4">{t("hours")}</p>

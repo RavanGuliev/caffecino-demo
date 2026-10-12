@@ -2,18 +2,18 @@ import { Link } from "react-router-dom";
 
 export default function Logo({ compact = false }) {
   return (
-    <Link to="/" className="flex items-center gap-2.5 shrink-0" aria-label="Caffècino">
+    <Link to="/" className="flex items-center gap-2 sm:gap-2.5 shrink-0" aria-label="Caffècino">
       <img
-        src="/images/caffecino.png"
+        src="/icon-192.png"
         alt=""
-        className="h-10 w-10 rounded-xl object-cover ring-1 ring-white/15 shadow-sm"
+        className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg sm:rounded-xl object-cover ring-1 ring-white/15 shadow-sm"
       />
       {!compact && (
-        <span className="leading-none max-[379px]:hidden">
-          <span className="block font-display text-[19px] font-semibold tracking-[0.18em] text-white">
-            CAFFÈCINO
+        <span className="leading-none max-[339px]:hidden">
+          <span className="block font-display text-[14px] sm:text-[19px] font-semibold tracking-[0.14em] sm:tracking-[0.18em] text-white">
+            CAFFECINO
           </span>
-          <span className="block text-[9px] font-semibold tracking-[0.32em] text-brand-300 mt-1">
+          <span className="block text-[7px] sm:text-[9px] font-semibold tracking-[0.28em] sm:tracking-[0.32em] text-brand-300 mt-1">
             THE ART OF COFFEE
           </span>
         </span>

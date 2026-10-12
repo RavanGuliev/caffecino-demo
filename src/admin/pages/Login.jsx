@@ -41,8 +41,8 @@ export default function Login() {
         <img src={HERO_IMAGE} alt="" className="absolute inset-0 h-full w-full object-cover opacity-60" />
         <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-brand-950/50 to-transparent" />
         <div className="absolute bottom-0 p-12 text-white">
-          <img src="/images/caffecino.png" alt="" className="h-14 w-14 rounded-2xl ring-1 ring-white/20" />
-          <p className="mt-6 font-display text-4xl font-bold tracking-[0.12em]">CAFFÈCINO</p>
+          <img src="/icon-192.png" alt="" className="h-14 w-14 rounded-2xl ring-1 ring-white/20" />
+          <p className="mt-6 font-display text-4xl font-bold tracking-[0.12em]">CAFFECINO</p>
           <p className="mt-2 text-sm tracking-[0.3em] text-brand-300">THE ART OF COFFEE</p>
         </div>
       </div>
@@ -58,7 +58,7 @@ export default function Login() {
         </div>
 
         <form onSubmit={submit} className="my-auto mx-auto w-full max-w-sm py-10 animate-rise">
-          <img src="/images/caffecino.png" alt="" className="lg:hidden h-14 w-14 rounded-2xl mb-6" />
+          <img src="/icon-192.png" alt="" className="lg:hidden h-14 w-14 rounded-2xl mb-6" />
           <h1 className="font-display text-3xl font-bold text-brand-950">{t("login.title")}</h1>
           <p className="mt-2 text-sm text-brand-950/55">{t("login.subtitle")}</p>
 

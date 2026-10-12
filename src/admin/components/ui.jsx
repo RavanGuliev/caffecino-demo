@@ -116,7 +116,7 @@ export function StatusPill({ active, onClick, labels }) {
 export function EmptyState({ text, action }) {
   return (
     <div className="py-16 text-center">
-      <img src="/images/caffecino.png" alt="" className="mx-auto h-14 w-14 rounded-2xl opacity-60" />
+      <img src="/icon-192.png" alt="" className="mx-auto h-14 w-14 rounded-2xl opacity-60" />
       <p className="mt-4 text-sm text-brand-950/50">{text}</p>
       {action && <div className="mt-4">{action}</div>}
     </div>
@@ -126,9 +126,9 @@ export function EmptyState({ text, action }) {
 export function Thumb({ src, className = "h-11 w-11" }) {
   return (
     <img
-      src={src || "/images/caffecino.png"}
+      src={src || "/icon-192.png"}
       alt=""
-      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = "/images/caffecino.png"; }}
+      onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = "/icon-192.png"; }}
       className={`rounded-xl object-cover bg-sand shrink-0 ${className}`}
     />
   );

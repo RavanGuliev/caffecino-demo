@@ -50,7 +50,7 @@ function ScrollTop() {
 function Splash() {
   return (
     <div className="min-h-screen grid place-items-center bg-brand-900">
-      <img src="/images/caffecino.png" alt="Caffècino" className="h-20 w-20 rounded-2xl animate-pulse" />
+      <img src="/icon-192.png" alt="Caffècino" className="h-20 w-20 rounded-2xl animate-pulse" />
     </div>
   );
 }

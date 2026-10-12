@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 import { Field, Input, Textarea } from "./ui";
 
 const LANGS = [
-  { code: "az", flag: "https://flagcdn.com/w40/az.png" },
-  { code: "en", flag: "https://flagcdn.com/w40/gb.png" },
-  { code: "ru", flag: "https://flagcdn.com/w40/ru.png" },
+  { code: "az", flag: "/flags/az.svg" },
+  { code: "en", flag: "/flags/gb.svg" },
+  { code: "ru", flag: "/flags/ru.svg" },
 ];
 
 // 3 dilli sahələr: fields = [{ name: "name", label, required, textarea }]

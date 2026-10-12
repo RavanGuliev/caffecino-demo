@@ -179,7 +179,7 @@ export default function Menu() {
         ) : sections.length === 0 ? (
           <div className="grid place-items-center min-h-[50vh] px-6 text-center">
             <div>
-              <img src="/images/caffecino.png" alt="" className="mx-auto h-20 w-20 rounded-2xl opacity-80" />
+              <img src="/icon-192.png" alt="" className="mx-auto h-20 w-20 rounded-2xl opacity-80" />
               <h2 className="mt-5 font-display text-2xl text-brand-900">{t("will_soon")}</h2>
             </div>
           </div>

@@ -358,6 +358,7 @@ categories.forEach((c) => {
 export const cafeInfo = {
   hours: "08:00 – 23:00",
   phone: "+994 50 123 45 67",
+  email: "info@caffecino.az",
   ...tr("address", "Ceyhun Hacıbəyli küç. 85, Bakı", "85 Jeyhun Hajibeyli St, Baku", "ул. Джейхуна Гаджибейли 85, Баку"),
   instagram: "https://www.instagram.com/caffecino.az/",
   tiktok: "https://www.tiktok.com/@caffecino.az",
